@@ -1,0 +1,22 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+env/
+.env/
+
+# Datasets
+dataset/
+
+# Saved models (Optional: you can remove this if you want to push the .keras file to GitHub,
+# but it's usually better to keep large models out of Git)
+model/realeye_model.keras
+*.keras
+*.h5
+
+# OS specific files
+.DS_Store
+Thumbs.db
