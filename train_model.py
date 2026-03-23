@@ -1,3 +1,4 @@
+
 """
 train_model.py
 --------------
@@ -90,6 +91,9 @@ def main():
         epochs=EPOCHS,
         batch_size=BATCH_SIZE,
     )
+    import numpy as np
+    dummy = np.zeros((1, 224, 224, 3))
+    model.predict(dummy)
 
     # ── 5. Save model ────────────────────────────────────────────
     model.save(MODEL_SAVE)

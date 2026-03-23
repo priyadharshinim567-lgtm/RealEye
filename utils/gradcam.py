@@ -72,8 +72,9 @@ def _compute_gradcam(model: tf.keras.Model,
         Raw heatmap of shape (feat_h, feat_w) with float values ≥ 0.
     """
     # Build a sub-model that outputs (conv_layer_output, final_prediction)
+    # We use model.input and model.get_layer(...).output
     grad_model = tf.keras.models.Model(
-        inputs=model.inputs,
+        inputs=model.input,
         outputs=[model.get_layer(layer_name).output, model.output],
     )
 

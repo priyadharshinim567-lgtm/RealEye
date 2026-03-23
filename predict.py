@@ -12,7 +12,7 @@ Usage::
 import sys
 import os
 import numpy as np
-from tensorflow.keras.models import load_model
+from keras.models import load_model
 
 # ── Local project import ─────────────────────────────────────────────
 from preprocessing.preprocess import load_and_preprocess_image

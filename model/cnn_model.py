@@ -15,14 +15,17 @@ Input (224×224×3)
   → Dense(1, Sigmoid)   ← probability of being AI-Generated
 """
 
-from tensorflow.keras.models import Sequential
+import tensorflow as tf
 from tensorflow.keras.layers import (
     Conv2D, MaxPooling2D, Flatten, Dense, Dropout
 )
 
 
-def build_model(input_shape: tuple = (224, 224, 3)) -> Sequential:
-    """Build and compile a binary-classification CNN.
+def build_model(input_shape: tuple = (224, 224, 3)) -> tf.keras.Model:
+    """Build and compile a binary-classification CNN using the Functional API.
+
+    The Functional API is used instead of Sequential to ensure the model
+    graph is properly defined for Grad-CAM and internal layer access.
 
     Parameters
     ----------
@@ -31,28 +34,30 @@ def build_model(input_shape: tuple = (224, 224, 3)) -> Sequential:
 
     Returns
     -------
-    tensorflow.keras.models.Sequential
+    tf.keras.Model
         Compiled Keras model ready for training.
     """
-    model = Sequential([
-        # ── Block 1 ──────────────────────────────────────────────
-        Conv2D(32, (3, 3), activation="relu", input_shape=input_shape),
-        MaxPooling2D(pool_size=(2, 2)),
+    inputs = tf.keras.Input(shape=input_shape)
 
-        # ── Block 2 ──────────────────────────────────────────────
-        Conv2D(64, (3, 3), activation="relu"),
-        MaxPooling2D(pool_size=(2, 2)),
+    # ── Block 1 ──────────────────────────────────────────────
+    x = Conv2D(32, (3, 3), activation="relu")(inputs)
+    x = MaxPooling2D(pool_size=(2, 2))(x)
 
-        # ── Block 3 ──────────────────────────────────────────────
-        Conv2D(128, (3, 3), activation="relu"),
-        MaxPooling2D(pool_size=(2, 2)),
+    # ── Block 2 ──────────────────────────────────────────────
+    x = Conv2D(64, (3, 3), activation="relu")(x)
+    x = MaxPooling2D(pool_size=(2, 2))(x)
 
-        # ── Classifier head ─────────────────────────────────────
-        Flatten(),
-        Dense(128, activation="relu"),
-        Dropout(0.5),          # helps prevent over-fitting
-        Dense(1, activation="sigmoid"),   # single output → binary
-    ])
+    # ── Block 3 ──────────────────────────────────────────────
+    x = Conv2D(128, (3, 3), activation="relu")(x)
+    x = MaxPooling2D(pool_size=(2, 2))(x)
+
+    # ── Classifier head ─────────────────────────────────────
+    x = Flatten()(x)
+    x = Dense(128, activation="relu")(x)
+    x = Dropout(0.5)(x)          # helps prevent over-fitting
+    outputs = Dense(1, activation="sigmoid")(x)   # single output → binary
+
+    model = tf.keras.Model(inputs=inputs, outputs=outputs)
 
     # Compile the model
     model.compile(

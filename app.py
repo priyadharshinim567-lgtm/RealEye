@@ -15,8 +15,9 @@ Run:
 import os
 import numpy as np
 import streamlit as st
+import tensorflow as tf
 from PIL import Image
-from tensorflow.keras.models import load_model
+from keras.models import load_model
 
 # ── Local project imports ────────────────────────────────────────────────────
 from utils.preprocess import preprocess_uploaded_image
@@ -145,8 +146,8 @@ def load_realeye_model(path: str):
     """
     if not os.path.isfile(path):
         return None
+    model = load_model(path)
     return load_model(path)
-
 
 # ════════════════════════════════════════════════════════════════════════════
 # Prediction logic
