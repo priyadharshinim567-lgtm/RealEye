@@ -35,7 +35,6 @@ RealEye/
 ├── train_model.py          # Model training script
 ├── app.py                  # Streamlit web app
 └── README.md
-
 ⚙️ Installation
 pip install -r requirements.txt
 
