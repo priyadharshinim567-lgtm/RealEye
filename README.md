@@ -1,124 +1,77 @@
-# 🔍 RealEye — AI vs Real Image Classifier
+👁️ RealEye – AI vs Real Image Detection
+📌 Overview
 
-**Week 1 Prototype** — A CNN-based binary classifier that detects whether an
-image is *Real* or *AI-Generated*.
+RealEye is a deep learning-based web application that detects whether an uploaded image is real (authentic) or AI-generated.
+It also provides visual explanation (Grad-CAM heatmap) to show which parts of the image influenced the prediction.
 
----
+🚀 Features
+🔍 Detects AI-generated vs real images
+🌡️ Grad-CAM heatmap for explainability
+📊 Confidence score for predictions
+🖥️ Interactive web app using Streamlit
+⚡ Fast and user-friendly interface
 
-## 📁 Project Structure
+🧠 Technologies Used
+Python
+TensorFlow / Keras (CNN)
+Streamlit
+NumPy, PIL
+Grad-CAM (Explainable AI)
 
-```
+📂 Project Structure
 RealEye/
-├── dataset/
-│   ├── real/                  ← Place real photos here
-│   └── ai_generated/          ← Place AI-generated images here
+│
+├── dataset/                # Training images (real & AI)
 ├── model/
-│   ├── cnn_model.py           ← CNN architecture definition
-│   ├── realeye_model.keras    ← (generated after training)
-│   └── training_history.png   ← (generated after training)
+│   ├── cnn_model.py        # CNN architecture
+│   ├── realeye_model.keras # Trained model
+│
 ├── preprocessing/
-│   └── preprocess.py          ← Image loading & preprocessing
-├── train_model.py             ← Train the model
-├── predict.py                 ← Predict on a single image
-├── requirements.txt           ← Python dependencies
-└── README.md                  ← You are here
-```
+│   ├── preprocess.py       # Image preprocessing
+│
+├── utils/
+│   ├── gradcam.py          # Heatmap generation
+│
+├── train_model.py          # Model training script
+├── app.py                  # Streamlit web app
+└── README.md
 
----
-
-## 🗂️ Setting Up the Dataset
-
-1. Collect images — aim for **at least 50–100 images per class** for
-   meaningful results. More is better.
-2. Place **real photographs** (camera shots, phone photos, etc.) inside:
-   ```
-   dataset/real/
-   ```
-3. Place **AI-generated images** (from DALL·E, Midjourney, Stable Diffusion,
-   etc.) inside:
-   ```
-   dataset/ai_generated/
-   ```
-4. Supported formats: `.jpg`, `.jpeg`, `.png`, `.bmp`, `.webp`
-
-> **Tip:** You can download datasets from Kaggle. Search for
-> *"AI-generated vs real images"* to find ready-made datasets.
-
----
-
-## ⚙️ Installation
-
-```bash
-# 1. (Recommended) Create a virtual environment
-python -m venv venv
-venv\Scripts\activate          # Windows
-# source venv/bin/activate     # macOS / Linux
-
-# 2. Install dependencies
+⚙️ Installation
 pip install -r requirements.txt
-```
 
----
-
-## 🚀 Usage
-
-### Train the Model
-
-```bash
+🏋️‍♀️ Train the Model
 python train_model.py
-```
 
-This will:
-- Load and preprocess all images from `dataset/`
-- Split into 80 % training / 20 % validation
-- Train the CNN for 10 epochs
-- Save the model to `model/realeye_model.keras`
-- Save accuracy/loss plots to `model/training_history.png`
+🌐 Run the Application
+streamlit run app.py
 
-### Predict on a Single Image
+📊 How It Works
+User uploads an image
+Image is preprocessed (resized, normalized)
+CNN model predicts probability
 
-```bash
-python predict.py path/to/image.jpg
-```
+Output:
+Label (Real / AI Generated)
+Confidence score
+Grad-CAM generates heatmap for explanation
 
-Example output:
+🎯 Use Cases
+Fake image detection
+Social media verification
+Digital content authentication
+Cybersecurity applications
 
-```
-==================================================
-  Image      : photo1.jpg
-  Prediction : Real
-  Confidence : 94.32 %
-==================================================
-```
+📈 Future Enhancements
+🎥 Video deepfake detection
+🌐 Browser extension integration
+☁️ Cloud deployment (real-time API)
+📱 Mobile app version
 
----
+📌 Conclusion
 
-## 🧠 Model Architecture
+RealEye demonstrates how AI can be used responsibly to detect AI-generated content, improving trust and authenticity in digital media.
 
-| Layer             | Output Shape       | Params  |
-|-------------------|--------------------|---------|
-| Conv2D (32, 3×3)  | 222 × 222 × 32    | 896     |
-| MaxPooling2D      | 111 × 111 × 32    | 0       |
-| Conv2D (64, 3×3)  | 109 × 109 × 64    | 18,496  |
-| MaxPooling2D      | 54 × 54 × 64      | 0       |
-| Conv2D (128, 3×3) | 52 × 52 × 128     | 73,856  |
-| MaxPooling2D      | 26 × 26 × 128     | 0       |
-| Flatten           | 86,528             | 0       |
-| Dense (128, ReLU) | 128                | 11,075,712 |
-| Dropout (0.5)     | 128                | 0       |
-| Dense (1, Sigmoid)| 1                  | 129     |
+⭐ Acknowledgment
 
-- **Optimiser:** Adam
-- **Loss:** Binary Cross-Entropy
-- **Metric:** Accuracy
-
----
-
-## 📌 Week 1 Scope
-
-- ✅ Dataset folder structure
-- ✅ Image preprocessing (resize, normalise)
-- ✅ CNN model definition
-- ✅ Model training with train/val split
-- ✅ Single-image prediction script
+Datasets sourced from public repositories (Kaggle & open sources).
 - ❌ Web interface (planned for later weeks)
